@@ -1,6 +1,7 @@
 package com.revature.eval.java.core;
 
 import java.time.temporal.Temporal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,8 +15,14 @@ public class EvaluationService {
 	 * @return
 	 */
 	public String reverse(String string) {
-		
-		return "";
+		char[] charArray = new char[string.length()];
+		char[] reverseCharArray = new char[string.length()];
+		charArray = string.toCharArray();
+		for(int i = charArray.length - 1; i >= 0; i--) {
+			reverseCharArray[charArray.length - 1 - i] = charArray[i];
+		}
+		String charToString = new String(reverseCharArray);
+		return charToString;
 	}
 
 	/**
@@ -27,7 +34,14 @@ public class EvaluationService {
 	 * @return
 	 */
 	public String acronym(String phrase) {
-		// TODO Write an implementation for this method declaration
+		String phraseUpperCase = phrase.toUpperCase();
+		String phraseArray[] = phraseUpperCase.split(" ");
+		char acronymArray[] = new char[phraseArray.length];
+		
+		for(int i = 0; i < phraseArray.length; i++){
+			acronymArray[i] = phraseArray[i].charAt(0);
+		}
+		
 		return null;
 	}
 
@@ -113,7 +127,52 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int getScrabbleScore(String string) {
-		// TODO Write an implementation for this method declaration
+		
+		String scrabbleString = string;
+		scrabbleString = scrabbleString.toUpperCase();
+		char[] scrabbleChar = scrabbleString.toCharArray();
+		int pointCounter = 0;
+		
+		//Initialize array's of letters and a HashMap
+		char[] alphabetOnePoint = {'A', 'E', 'I', 'O', 'U', 'L', 'N', 'R', 'S', 'T'};
+		char[] alphabetTwoPoint = {'D', 'G'};
+		char[] alphabetThreePoint = {'B', 'C', 'M', 'P'};
+		char[] alphabetFourPoint = {'F', 'H', 'V', 'W', 'Y'};
+		char[] alphabetFivePoint = {'K'};
+		char[] alphabetEightPoint = {'J', 'X'};
+		char[] alphabetTenPoint = {'Q', 'Z'};
+		HashMap<Character, Integer> scrabblePointsMap = new HashMap<Character, Integer>();		
+		
+		//Populate the HashMap with letters and their corresponding point values
+		for(int i = 0; i < alphabetOnePoint.length; i++) {
+			scrabblePointsMap.put(alphabetOnePoint[i], 1);
+		}
+		for(int i = 0; i < alphabetTwoPoint.length; i++) {
+			scrabblePointsMap.put(alphabetTwoPoint[i], 2);
+		}
+		for(int i = 0; i < alphabetThreePoint.length; i++) {
+			scrabblePointsMap.put(alphabetThreePoint[i], 3);
+		}
+		for(int i = 0; i < alphabetFourPoint.length; i++) {
+			scrabblePointsMap.put(alphabetFourPoint[i], 4);
+		}
+		for(int i = 0; i < alphabetFivePoint.length; i++) {
+			scrabblePointsMap.put(alphabetFivePoint[i], 5);
+		}
+		for(int i = 0; i < alphabetEightPoint.length; i++) {
+			scrabblePointsMap.put(alphabetEightPoint[i], 5);
+		}
+		for(int i = 0; i < alphabetTenPoint.length; i++) {
+			scrabblePointsMap.put(alphabetTenPoint[i], 5);
+		}
+	
+		//Point Counter Function
+		for(int i = 0; i < scrabbleChar.length; i++) {
+			pointCounter = pointCounter + scrabblePointsMap.get(scrabbleChar[i]);
+		}
+		
+		System.out.println(pointCounter);
+		
 		return 0;
 	}
 
@@ -149,7 +208,65 @@ public class EvaluationService {
 	 * NANP-countries, only 1 is considered a valid country code.
 	 */
 	public String cleanPhoneNumber(String string) {
-		// TODO Write an implementation for this method declaration
+		
+		//Put input string into a char	array
+		 String messyPhoneNumber = string;
+		 char[] phoneNumberCharArray = messyPhoneNumber.toCharArray();
+		 
+		 String cleanedPhoneNumberString = "";
+		 int[] cleanedPhoneNumber = new int[10]; 
+		 int[] cleanedPhoneNumberPlusOne = new int[11];
+		 
+		 int phoneIntegerCounter = 0;
+		 int indexCounter = 0;
+		 int indexCounter2 = 0;
+		
+		 //Figure out how many integers are in the phone number
+		 for(int i = 0; i < phoneNumberCharArray.length; i++) {
+			 for(int j = 0; j < 10; j++) { 	
+				 if(Character.getNumericValue(phoneNumberCharArray[i]) == j) {
+					 phoneIntegerCounter++;			
+				 }
+			}
+		}
+		 
+		 //Cleanup Phone Numbers Length 10 (No International Code)
+		 if(phoneIntegerCounter == 10) {
+			 for(int i = 0; i < phoneNumberCharArray.length; i++) {
+				 for(int j = 0; j < 10; j++) { 	
+					 if(Character.getNumericValue(phoneNumberCharArray[i]) == j) {
+						 cleanedPhoneNumber[indexCounter] = Character.getNumericValue(phoneNumberCharArray[i]);
+						 indexCounter++;
+					 }
+				}
+			 }
+		}
+		 
+		//Cleanup Phone Numbers Length 11 (International Code)
+		 if(phoneIntegerCounter == 11) {
+			 for(int i = 0; i < phoneNumberCharArray.length; i++) {
+				 for(int j = 0; j < 10; j++) { 	
+					 if(Character.getNumericValue(phoneNumberCharArray[i]) == j) {
+						 cleanedPhoneNumberPlusOne[indexCounter] = Character.getNumericValue(phoneNumberCharArray[i]);
+					 	 indexCounter++;
+				     }
+			     }
+		    }
+			 
+		//Remove the internal code 1 from the array --> reducing it to length 10
+		for(int k = 1; k < cleanedPhoneNumberPlusOne.length; k++) {
+				cleanedPhoneNumber[indexCounter2] = cleanedPhoneNumberPlusOne[k];
+				indexCounter2++;
+			}
+		}
+		 
+		//Convert the integer array phone number to a string
+		for(int i = 0; i < cleanedPhoneNumber.length; i++) {
+			cleanedPhoneNumberString = cleanedPhoneNumberString + cleanedPhoneNumber[i];
+		}
+		
+		System.out.println(cleanedPhoneNumberString);
+		
 		return null;
 	}
 
@@ -163,7 +280,30 @@ public class EvaluationService {
 	 * @return
 	 */
 	public Map<String, Integer> wordCount(String string) {
-		// TODO Write an implementation for this method declaration
+		
+		//Split input string, initialize HashMap and counter
+		String[] stringSplit = string.split(" ");
+		HashMap<String, Integer> wordCountMap = new HashMap<String, Integer>();
+		int counter = 0;
+		
+		
+		//Populate Map with key, and a value of 1
+		for(int i = 0; i < stringSplit.length; i++) {
+				wordCountMap.put(stringSplit[i], 1);
+		}
+		
+		for(int i = 0; i < wordCountMap.keySet().toArray().length; i++) {
+			for(int j = 0; j < stringSplit.length; j++) {
+				if(wordCountMap.keySet().toArray()[i].toString() == stringSplit[j].toString()) {
+					counter = 0;
+					++counter;
+					wordCountMap.put(wordCountMap.keySet().toArray()[i].toString(), wordCountMap.get(wordCountMap.keySet().toArray()[i]) + counter);
+				} else {
+					break;
+				}
+			}
+		}	
+		
 		return null;
 	}
 
@@ -432,19 +572,6 @@ public class EvaluationService {
 	public boolean isPangram(String string) {
 		// TODO Write an implementation for this method declaration
 		return false;
-	}
-
-	/**
-	 * 17. Calculate the moment when someone has lived for 10^9 seconds.
-	 * 
-	 * A gigasecond is 109 (1,000,000,000) seconds.
-	 * 
-	 * @param given
-	 * @return
-	 */
-	public Temporal getGigasecondDate(Temporal given) {
-		// TODO Write an implementation for this method declaration
-		return null;
 	}
 
 	/**
