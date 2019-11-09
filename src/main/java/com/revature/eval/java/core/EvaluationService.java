@@ -21,7 +21,9 @@ public class EvaluationService {
 		for(int i = charArray.length - 1; i >= 0; i--) {
 			reverseCharArray[charArray.length - 1 - i] = charArray[i];
 		}
+		
 		String charToString = new String(reverseCharArray);
+		
 		return charToString;
 	}
 
@@ -42,7 +44,9 @@ public class EvaluationService {
 			acronymArray[i] = phraseArray[i].charAt(0);
 		}
 		
-		return null;
+		String acronymArrayString = new String(acronymArray);
+
+		return acronymArrayString;
 	}
 
 	/**
@@ -173,7 +177,7 @@ public class EvaluationService {
 		
 		System.out.println(pointCounter);
 		
-		return 0;
+		return pointCounter;
 	}
 
 	/**
@@ -267,7 +271,7 @@ public class EvaluationService {
 		
 		System.out.println(cleanedPhoneNumberString);
 		
-		return null;
+		return cleanedPhoneNumberString;
 	}
 
 	/**
@@ -403,8 +407,32 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isArmstrongNumber(int input) {
-		// TODO Write an implementation for this method declaration
-		return false;
+		
+		boolean isItAnArmstrongNumber = false;
+		String inputString = String.valueOf(input);
+		int[] inputChar = new int[inputString.length()];
+		double doubleSum = 0;
+		int intSum = 0;
+		
+		//Input digits into char array
+		for(int i = 0; i < inputString.length(); i++) {
+		    inputChar[i] = Character.digit(inputString.charAt(i), 10);
+		}
+		
+		//Calculate the exponents for the chart array
+		for(int i = 0; i < inputString.length(); i++) {
+			doubleSum = doubleSum + Math.pow(inputChar[i], inputString.length());
+			System.out.println(Math.pow(inputChar[i], inputString.length()));
+		}
+		
+		//Convert sum from double to int through casting
+		intSum = (int) doubleSum;
+		
+		//Compare our exponent sum and our int input to see if they're equivalent
+		if(intSum == input) {
+			isItAnArmstrongNumber = true;
+		}
+		return isItAnArmstrongNumber;
 	}
 
 	/**
